@@ -15,6 +15,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && apt-get install -y --no-install-recommends apache2 \
     && rm -rf /var/lib/apt/lists/*
 
+# Custom apache2 configuration
+RUN COPY conf.d/* /etc/apache2/conf-enabled/
+
 # Remove default VirtualHost
 RUN rm -rf /etc/apache2/sites-enabled/000-default.conf /var/www/html
 
