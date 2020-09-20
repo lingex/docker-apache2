@@ -1,29 +1,23 @@
-# Dockerfile for Apache2 within TeamRock
+# Dockerfile for Apache2
 #
 # Details:
 #  - Apache 2.4
 ##
 
 # Pull base image.
-FROM teamrock/ubuntu:20.04
+FROM ubuntu:20.04
 
 # Maintainer
 MAINTAINER TeamRock <devtech@teamrock.com>
 
 # Install Apache2
-RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+RUN DEBIAN_FRONTEND=noninteractive apt update \
     && apt install -y curl apache2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Custom apache2 configuration
 COPY conf.d/* /etc/apache2/conf-enabled/
 COPY /etc/apache2/mods-available/cgid* /etc/apache2/mods-enabled/
-
-# Remove default VirtualHost
-RUN rm -rf /etc/apache2/sites-enabled/000-default.conf /var/www/html
-
-# Enable rewrite module
-RUN a2enmod rewrite
 
 # Configure Apache2
 ENV APACHE_RUN_USER     www-data
