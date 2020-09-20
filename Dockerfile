@@ -5,18 +5,19 @@
 ##
 
 # Pull base image.
-FROM teamrock/ubuntu:latest
+FROM teamrock/ubuntu:20.04
 
 # Maintainer
 MAINTAINER TeamRock <devtech@teamrock.com>
 
 # Install Apache2
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
-    && apt-get install -y --no-install-recommends apache2 \
+    && apt install -y curl apache2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Custom apache2 configuration
 COPY conf.d/* /etc/apache2/conf-enabled/
+COPY /etc/apache2/mods-available/cgid* /etc/apache2/mods-enabled/
 
 # Remove default VirtualHost
 RUN rm -rf /etc/apache2/sites-enabled/000-default.conf /var/www/html
